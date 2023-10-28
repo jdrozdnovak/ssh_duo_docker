@@ -29,10 +29,10 @@ jobs:
 
       - name: Build and push the ssh duo docker image tag
         run: |
-          docker build . --tag ghcr.io/jdrozdnovak/ssh-duo-docker:$GITHUB_REF
-          docker push ghcr.io/jdrozdnovak/ssh-duo-docker:$GITHUB_REF
+          docker build . --tag ghcr.io/jdrozdnovak/ssh-duo-docker:$GITHUB_RUN_NUMBER
+          docker push ghcr.io/jdrozdnovak/ssh-duo-docker:$GITHUB_RUN_NUMBER
         env:
-          GITHUB_REF: ${{ vars.GITHUB_REF }}
+          GITHUB_REF: ${{ vars.GITHUB_RUN_NUMBER }}
       
       - name: Build and push the ssh duo docker image latest
         run: |
