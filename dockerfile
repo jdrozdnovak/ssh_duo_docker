@@ -17,9 +17,6 @@ RUN apt update
 RUN apt install -y duo-unix ansible
 
 # Set up configuration for SSH
-RUN rm /etc/ssh/ssh_host_*
-RUN ssh-keygen -t rsa -b 4096 -f /etc/ssh/ssh_host_rsa_key -N ""
-RUN ssh-keygen -t ed25519 -f /etc/ssh/ssh_host_ed25519_key -N ""
 RUN mkdir -p /var/run/sshd
 RUN mkdir -p /run/sshd
 RUN mkdir -p /etc/ssh/sshd_config.d
@@ -44,6 +41,7 @@ RUN sed -i "s/^host =.*/host = $DUO_HOST/" /etc/duo/login_duo.conf
 RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
 
 VOLUME /app/ansible/
+VOLUME /app/sshd_config/
 
 ENV NOTVISIBLE "in users profile"
 RUN echo "export VISIBLE=now" >> /etc/profile

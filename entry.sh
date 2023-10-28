@@ -1,4 +1,15 @@
 #!/bin/bash
+if [ ! -f "/app/sshd_config/ssh_host_rsa_key" ]; then
+    ssh-keygen -t rsa -b 4096 -f /app/sshd_config/ssh_host_rsa_key -N ""
+fi
+
+# Check for ED25519 key
+if [ ! -f "/app/sshd_config/ssh_host_ed25519_key" ]; then
+    ssh-keygen -t ed25519 -f /app/sshd_config/ssh_host_ed25519_key -N ""
+fi
+rm /etc/ssh/ssh_host_*
+cp /app/sshd_config/ssh_host_rsa_key /etc/ssh/ssh_host_rsa_key
+cp /app/sshd_config/ssh_host_ed25519_key /etc/ssh/ssh_host_ed25519_key
 adduser $SSH_USER --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password
 echo "$SSH_USER:$SSH_PASSWORD" | chpasswd
 mkdir -p /home/$SSH_USER/.ssh

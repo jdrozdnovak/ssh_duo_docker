@@ -2,9 +2,8 @@ version: '3.8'
 
 services:
   ubuntu-duo-ssh:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    container_name: ubuntu-duo-ssh
+    image: ghcr.io/jdrozdnovak/ssh-duo-docker:latest
     ports:
       - "2222:22"
     environment:
@@ -17,3 +16,7 @@ services:
     volumes:
       - ./ansible/:/app/ansible/
       - ./ansible/hosts:/etc/ansible/hosts:ro
+      - sshd_config:/app/sshd_config/
+
+volumes:
+  sshd_config:
