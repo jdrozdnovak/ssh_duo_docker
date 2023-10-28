@@ -1,6 +1,6 @@
 
 # Use the official image as a parent image
-FROM ubuntu:jammy
+FROM ubuntu
 
 #variables
 ENV SSH_PASSWORD=value
@@ -10,16 +10,18 @@ ENV DUO_IKEY=value
 ENV DUO_HOST=value
 ENV PRIVATE_KEY=value
 
-#get duo
-RUN deb [arch=amd64] https://pkg.duosecurity.com/Ubuntu jammy main
-RUN curl -s https://duo.com/DUO-GPG-PUBLIC-KEY.asc | sudo gpg --dearmor -o  /etc/apt/trusted.gpg.d/duo.gpg
-
 # Update the system
-RUN apt-get update
-RUN apt-get upgrade -y
+RUN apt update
+RUN apt upgrade -y
+RUN apt install -y openssh-server libssl-dev curl gnupg2 gnupg
+
+#get duo
+RUN echo "deb [arch=amd64] https://pkg.duosecurity.com/Ubuntu jammy main" >> /etc/apt/sources.list
+RUN curl -s https://duo.com/DUO-GPG-PUBLIC-KEY.asc | gpg --dearmor -o  /etc/apt/trusted.gpg.d/duo.gpg
 
 # Install OpenSSH Server
-RUN apt-get install -y openssh-server libssl-dev duo-unix
+RUN apt update
+RUN apt install -y duo-unix
 
 # Set up configuration for SSH
 RUN rm /etc/ssh/ssh_host_*
