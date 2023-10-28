@@ -8,6 +8,10 @@ on:
     branches:
       - main
 
+env:
+  # Setting an environment variable with the value of a configuration variable
+  env_var: ${{ vars.ENV_CONTEXT_VAR }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -25,8 +29,10 @@ jobs:
 
       - name: Build and push the ssh duo docker image tag
         run: |
-          docker build . --tag ghcr.io/jdrozdnovak/ssh-duo-docker:$env:GITHUB_REF
-          docker push ghcr.io/jdrozdnovak/ssh-duo-docker:$env:GITHUB_REF
+          docker build . --tag ghcr.io/jdrozdnovak/ssh-duo-docker:$GITHUB_REF
+          docker push ghcr.io/jdrozdnovak/ssh-duo-docker:$GITHUB_REF
+        env:
+          GITHUB_REF: ${{ vars.GITHUB_REF }}
       
       - name: Build and push the ssh duo docker image latest
         run: |
