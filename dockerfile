@@ -5,7 +5,7 @@ FROM ubuntu
 # Update the system
 RUN apt update
 RUN apt upgrade -y
-RUN apt install -y openssh-server libssl-dev curl gnupg2 gnupg vim software-properties-common
+RUN apt install -y openssh-server libssl-dev curl gnupg2 gnupg vim software-properties-common nmap htop
 RUN add-apt-repository --yes --update ppa:ansible/ansible
 
 #get duo
