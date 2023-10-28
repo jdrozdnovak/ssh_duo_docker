@@ -45,4 +45,4 @@ RUN chmod +x /entry.sh
 EXPOSE 22
 
 # Run SSH
-CMD [/entry.sh]
+CMD ["/entry.sh"]
