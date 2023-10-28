@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: SSH DUO Docker image
 
 on:
   push:
@@ -13,6 +13,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag ssh_duo_docker:$(date +%s)
+    - uses: actions/checkout@v2
+    - name: Login to GitHub Container Registry
+    uses: docker/login-action@v1
+    with:
+    registry: ghcr.io
+    username: ${{ github.actor }}
+    password: ${{ secrets.GITHUB_TOKEN }}
+    - name: Build the ssh duo docker image
+    run: |
+       docker build . --tag ghcr.io/jdrozdnovak/ssh-duo-docker:latest
+       docker run ghcr.io/jdrozdnovak/ssh-duo-docker:latest
+       docker push ghcr.io/jdrozdnovak/ssh-duo-docker:latest
