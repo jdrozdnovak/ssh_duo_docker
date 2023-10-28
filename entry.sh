@@ -3,7 +3,7 @@ adduser $SSH_USER --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled
 echo "$SSH_USER:$SSH_PASSWORD" | chpasswd
 mkdir -p /home/$SSH_USER/.ssh
 chmod -R go= /home/$SSH_USER/.ssh
-echo $PRIVATE_KEY >> /home/$SSH_USER/.ssh/id_ed25519
+echo $PRIVATE_KEY | base64 -d >> /home/$SSH_USER/.ssh/id_ed25519
 chown -R $SSH_USER:$SSH_USER /home/$SSH_USER/.ssh
 chmod 600 /home/$SSH_USER/.ssh/id_ed25519
 sed -i "s/^ikey =.*/ikey = $DUO_IKEY/" /etc/duo/login_duo.conf
