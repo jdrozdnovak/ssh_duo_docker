@@ -43,7 +43,7 @@ RUN sed -i "s/^skey =.*/skey = $DUO_SKEY/" /etc/duo/login_duo.conf
 RUN sed -i "s/^host =.*/host = $DUO_HOST/" /etc/duo/login_duo.conf
 RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
 
-VOLUME /app/ansible
+VOLUME /app/ansible/
 
 ENV NOTVISIBLE "in users profile"
 RUN echo "export VISIBLE=now" >> /etc/profile
