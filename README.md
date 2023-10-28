@@ -1,1 +1,28 @@
 # ssh_duo_docker
+
+Docker compose  
+
+```yaml
+version: '3.8'
+
+services:
+  ubuntu-duo-ssh:
+    container_name: ubuntu-duo-ssh
+    image: ghcr.io/jdrozdnovak/ssh-duo-docker:latest
+    ports:
+      - "2222:22"
+    environment:
+      - SSH_PASSWORD=${SSH_PASSWORD}
+      - SSH_USER=${SSH_USER}
+      - DUO_SKEY=${DUO_SKEY}
+      - DUO_IKEY=${DUO_IKEY}
+      - DUO_HOST=${DUO_HOST}
+      - PRIVATE_KEY=${PRIVATE_KEY}
+    volumes:
+      - ./ansible/:/app/ansible/
+      - ./ansible/hosts:/etc/ansible/hosts:ro
+      - sshd_config:/app/sshd_config/
+
+volumes:
+  sshd_config:
+```
