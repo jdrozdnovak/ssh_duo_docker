@@ -5,7 +5,8 @@ FROM ubuntu
 # Update the system
 RUN apt update
 RUN apt upgrade -y
-RUN apt install -y openssh-server libssl-dev curl gnupg2 gnupg
+RUN apt install -y openssh-server libssl-dev curl gnupg2 gnupg vim software-properties-common
+RUN add-apt-repository --yes --update ppa:ansible/ansible
 
 #get duo
 RUN echo "deb [arch=amd64] https://pkg.duosecurity.com/Ubuntu jammy main" >> /etc/apt/sources.list
@@ -13,7 +14,7 @@ RUN curl -s https://duo.com/DUO-GPG-PUBLIC-KEY.asc | gpg --dearmor -o  /etc/apt/
 
 # Install OpenSSH Server
 RUN apt update
-RUN apt install -y duo-unix
+RUN apt install -y duo-unix ansible
 
 # Set up configuration for SSH
 RUN rm /etc/ssh/ssh_host_*
@@ -38,7 +39,11 @@ RUN sed -i 's/^#*X11Forwarding .*/X11Forwarding no/' /etc/ssh/sshd_config
 RUN sed -i 's/^#*PermitRootLogin .*/PermitRootLogin no/' /etc/ssh/sshd_config
 RUN sed -i 's/^#*LogLevel .*/LogLevel VERBOSE/' /etc/ssh/sshd_config
 RUN echo "ForceCommand /usr/sbin/login_duo" >> /etc/ssh/sshd_config;
+RUN sed -i "s/^skey =.*/skey = $DUO_SKEY/" /etc/duo/login_duo.conf
+RUN sed -i "s/^host =.*/host = $DUO_HOST/" /etc/duo/login_duo.conf
 RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+
+VOLUME /app/ansible
 
 ENV NOTVISIBLE "in users profile"
 RUN echo "export VISIBLE=now" >> /etc/profile
