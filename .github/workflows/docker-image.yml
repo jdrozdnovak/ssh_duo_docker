@@ -23,7 +23,12 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push the ssh duo docker image
+      - name: Build and push the ssh duo docker image tag
+        run: |
+          docker build . --tag ghcr.io/jdrozdnovak/ssh-duo-docker:$env:GITHUB_REF
+          docker push ghcr.io/jdrozdnovak/ssh-duo-docker:$env:GITHUB_REF
+      
+      - name: Build and push the ssh duo docker image latest
         run: |
           docker build . --tag ghcr.io/jdrozdnovak/ssh-duo-docker:latest
           docker push ghcr.io/jdrozdnovak/ssh-duo-docker:latest
