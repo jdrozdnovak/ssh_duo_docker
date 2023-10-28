@@ -20,7 +20,7 @@ RUN rm /etc/ssh/ssh_host_*
 RUN ssh-keygen -t rsa -b 4096 -f /etc/ssh/ssh_host_rsa_key -N ""
 RUN ssh-keygen -t ed25519 -f /etc/ssh/ssh_host_ed25519_key -N ""
 RUN mkdir /var/run/sshd
-RUN mkdir /run/sshd
+# RUN mkdir /run/sshd
 RUN awk '$5 >= 3071' /etc/ssh/moduli > /etc/ssh/moduli.safe
 RUN mv /etc/ssh/moduli.safe /etc/ssh/moduli
 RUN sed -i 's/^\#HostKey \/etc\/ssh\/ssh_host_\(rsa\|ed25519\)_key$/HostKey \/etc\/ssh\/ssh_host_\1_key/g' /etc/ssh/sshd_config
